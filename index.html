@@ -378,6 +378,11 @@ body {
   white-space: pre;
   counter-reset: line;
 }
+.bold {
+  font-weight: bold;
+  color: #111;
+  padding:5px;
+}
 .code-block code > span.line {
   display: block;
   position: relative;
@@ -786,7 +791,7 @@ body {
 
   <div class="page-footer">
     <span>NEXT Training Center — فهرس المحتويات</span>
-    <span>صفحة ١</span>
+    <span>صفحة 1</span>
   </div>
 </div>
 
@@ -880,7 +885,7 @@ body {
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الأولى</span>
-    <span>صفحة ٢</span>
+    <span>صفحة 2</span>
   </div>
 </div>
 
@@ -979,8 +984,117 @@ cin <span class="kw">&gt;&gt;</span> number;</code>
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الثانية</span>
-    <span>صفحة ٣</span>
+    <span>صفحة 3</span>
   </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 3 — examples C++
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+    <!-- header consistent with page 3 -->
+    <div class="page-header">
+        <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+        <span class="header-chapter">أساسيات C++</span>
+    </div>
+
+    <div class="chapter-label">الوحدة الثانية · تطبيقات عملية</div>
+    <div class="chapter-title">تمارين أساسيات C++</div>
+    <div class="chapter-sub">المتغيرات · الإدخال والإخراج · العمليات الحسابية والمنطقية · التطبيق الذاتي</div>
+    <hr class="chapter-rule" style="border-color: var(--acc-blue);">
+
+    <!-- small intro -->
+    <div class="info-box warn" style="margin-top: 0.5rem;">
+        <div class="info-box-accent"><span>✍️ قبل البدء</span></div>
+        <div class="info-box-body">
+            <strong>تذكير مهم:</strong> كل تمرين يتطلب كتابة برنامج C++ كامل يحتوي على <code style="font-family:monospace">#include &lt;iostream&gt;</code> و <code style="font-family:monospace">using namespace std;</code> ودالة <code style="font-family:monospace">main()</code>.  
+            حاول حل التمارين بنفسك قبل مراجعة أي نموذج — الممارسة هي المفتاح لإتقان اللغة.
+        </div>
+    </div>
+
+    <!-- EXERCISES SECTION -->
+    <div class="section-heading purple">
+        <h2>📘 تمارين تطبيقية — طبق ما تعلمته</h2>
+    </div>
+
+    <div class="exercises-grid">
+        <!-- تمرين 1 -->
+        <div class="exercise-card">
+            <div class="exercise-header">
+                <div class="exercise-title bold">1) برنامج ترحيب تفاعلي</div>
+            </div>
+            <div class="exercise-content">
+                <p>✏️ اكتب برنامجاً C++ يطلب من المستخدم إدخال اسمه (من نوع <code>string</code>) ثم عمره (من نوع <code>int</code>)، وبعد ذلك يطبع رسالة ترحيبية مخصصة مثل:</p>
+                <div class="code-block" style="margin: 0.6rem 0;">
+                    <div class="code-label">مثال الإخراج المتوقع</div>
+                    <code style="background: #1e2f3a;">مرحباً أحمد، عمرك 22 سنة. أهلاً بك في عالم البرمجة! 🚀</code>
+                </div>
+                <p><strong>المطلوب:</strong> استخدم <code>cin</code> و <code>cout</code> بشكل صحيح، وتأكد من التعامل مع المسافات في الاسم (يمكنك استخدام <code>getline</code> إذا أردت التحدي).</p>
+            </div>
+        </div>
+
+        <!-- تمرين 2 : جميع أنواع البيانات -->
+        <div class="exercise-card">
+            <div class="exercise-header">
+                <div class="exercise-title bold"> 2) استكشاف أنواع البيانات الأساسية</div>
+            </div>
+            <div class="exercise-content">
+                <p>🔢 عرّف متغيرات تمثل الأنواع التالية: <code>int, float, double, char, bool, string</code>. قم بإسناد قيم مناسبة لكل منها (مثل: 42, 3.14f, 2.71828, 'Z', true, "C++ قوية"). ثم اطبع جميع القيم باستخدام cout مع رسالة واضحة لكل متغير.</p>
+                <p><strong>ملاحظة:</strong> عند طباعة قيمة <code>bool</code> ستظهر 1 (للـ true) أو 0 (للـ false). جرّب تغيير القيمة وشاهد الناتج.</p>
+                <div class="task-hint"><span>🧪 مثال جزئي:</span> <span dir="ltr">cout << "قيمة العدد الصحيح: " << myInt << endl;</span></div>
+            </div>
+        </div>
+
+        <!-- تمرين 3: العمليات الحسابية و مشكلة القسمة -->
+        <div class="exercise-card">
+            <div class="exercise-header">
+                <div class="exercise-title bold"> 3) الآلة الحاسبة البسيطة (عددان صحيحان)</div>
+            </div>
+            <div class="exercise-content">
+                <p>🧮 اكتب برنامجاً يطلب من المستخدم إدخال عددين صحيحين (<code>int</code>)، ثم يقوم بحساب وطباعة ما يلي:</p>
+                <ul class="bullet-list" style="margin-right: 1.2rem;">
+                    <li>المجموع (<code>+</code>)</li>
+                    <li>الفرق (الأول - الثاني)</li>
+                    <li>الضرب (<code>*</code>)</li>
+                    <li>القسمة الصحيحة (ناتج قسمة العدد الأول على الثاني) مع الانتباه إلى مشكلة القسمة الصحيحة</li>
+                    <li>باقي القسمة (<code>%</code>)</li>
+                </ul>
+                <p>⚠️ تحدٍ إضافي: قم بحساب القسمة العشرية الدقيقة (double) عن طريق تحويل أحد العددين إلى <code>double</code>.</p>
+                <div class="task-hint"><span>📌 تذكر:</span> <span dir="ltr">7 / 2 = 3 (لأنها int)، بينما (double)7 / 2 = 3.5</span></div>
+            </div>
+        </div>
+
+        <!-- تمرين 4: تحويل درجة الحرارة -->
+        <div class="exercise-card">
+            <div class="exercise-header">
+                <div class="exercise-title bold"> 4) تحويل درجة الحرارة (مئوية ← فهرنهايت)</div>
+            </div>
+            <div class="exercise-content">
+                <p>🌡️ اكتب برنامجاً يقرأ درجة الحرارة بالدرجة المئوية (<code>double celsius</code>) ثم يحولها إلى فهرنهايت وفق المعادلة: <strong>F = C × 9/5 + 32</strong>. أظهر الناتج بمنتهى الدقة (مثلاً: "درجة الحرارة بالفهرنهايت: 77.00").</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- نصائح ختامية وأسئلة تفكير -->
+    <div class="section-heading green" style="margin-top: 1rem;">
+        <h2>💡 ملاحظات ومساعدات إضافية</h2>
+    </div>
+    <div class="info-box" style="border-right-color: var(--acc-green); background: #f5faf8;">
+        <div class="info-box-body">
+            <ul style="margin-right: 1.5rem;">
+                <li>لكل برنامج، ابدأ بقالب: <code style="direction: ltr;">#include &lt;iostream&gt; using namespace std; int main() { ... return 0; }</code></li>
+                <li>جرب استخدام <code>endl</code> أو <code>"\n"</code> للسطر الجديد.</li>
+                <li>في التمارين التي تتطلب مقارنات، تذكر أن العوامل المنطقية تعطي قيمة <code>bool</code> (true/false).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- footer page number 4 -->
+    <div class="page-footer">
+        <span>NEXT Training Center — الوحدة الثانية (تمارين)</span>
+        <span>صفحة 4</span>
+    </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -1068,12 +1182,186 @@ cin <span class="kw">&gt;&gt;</span> number;</code>
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الثالثة</span>
-    <span>صفحة ٤</span>
+    <span>صفحة 5</span>
+  </div>
+</div>
+<!-- ════════════════════════════════════════════════════════════════
+      CHAPTER 4 — switch-case
+       ════════════════════════════════════════════════════════════════
+  -->
+      <div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">التحكم المتقدم</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الثالثة · متقدم</div>
+  <div class="chapter-title">الحلقات المسماة (Labeled Loops) & جملة switch</div>
+  <div class="chapter-sub">استخدام التصنيفات مع break/continue · التبديل بين عدة مسارات</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-blue)">
+
+  <div class="section-heading blue">
+    <h2>🏷️ تسمية الحلقات (Naming a Loop)</h2>
+  </div>
+  <div class="code-block">
+    <div class="code-label">حلقة مسماة — الخروج من الحلقات المتداخلة</div>
+    <code><span class="cm">// تسمية الحلقة الخارجية</span>
+<span class="kw">outer</span>: <span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">1</span>; i <= <span class="num">3</span>; i++) {
+    <span class="kw">for</span> (<span class="typ">int</span> j = <span class="num">1</span>; j <= <span class="num">3</span>; j++) {
+        <span class="kw">if</span> (i * j == <span class="num">4</span>) {
+            cout <span class="kw">&lt;&lt;</span> <span class="str">"خرجت من الحلقتين عند "</span> <span class="kw">&lt;&lt;</span> i <span class="kw">&lt;&lt;</span> <span class="str">","</span> <span class="kw">&lt;&lt;</span> j <span class="kw">&lt;&lt;</span> endl;
+            <span class="kw">break outer</span>;   <span class="cm">// يخرج من outer وليس فقط الداخلية</span>
+        }
+        cout <span class="kw">&lt;&lt;</span> i <span class="kw">&lt;&lt;</span> <span class="str">","</span> <span class="kw">&lt;&lt;</span> j <span class="kw">&lt;&lt;</span> <span class="str">"  "</span>;
+    }
+}
+
+<span class="cm">// continue مع تسمية الحلقة</span>
+<span class="kw">start</span>: <span class="kw">while</span> (<span class="typ">int</span> count = <span class="num">0</span>; count < <span class="num">5</span>; count++) {
+    <span class="kw">if</span> (count % <span class="num">2</span> == <span class="num">0</span>)
+        <span class="kw">continue start</span>;   <span class="cm">// ينتقل إلى التكرار التالي من الحلقة المسماة start</span>
+    cout <span class="kw">&lt;&lt;</span> count <span class="kw">&lt;&lt;</span> <span class="str">" "</span>;
+}</code>
+  </div>
+  <ul class="bullet-list blue">
+    <li><strong>التسمية (label)</strong>: تُكتب قبل الحلقة مباشرة متبوعة بنقطتين رأسيتين <code style="font-family:monospace">outer:</code>.</li>
+    <li><strong>break label;</strong> — يخرج من الحلقة المحددة (حتى لو كانت خارجية في حلقات متداخلة).</li>
+    <li><strong>continue label;</strong> — يتخطى بقية التكرار الحالي للحلقة المسماة ويبدأ التكرار التالي فيها.</li>
+    <li><strong>فائدة أساسية</strong>: التحكم الدقيق في الحلقات المتداخلة دون الحاجة إلى متغيرات إضافية.</li>
+  </ul>
+
+  <div class="section-heading green">
+    <h2>🔀 جملة switch — متعدد الفروع</h2>
+  </div>
+  <div class="code-block">
+    <div class="code-label">switch / case / default</div>
+    <code><span class="typ">char</span> grade = <span class="str">'B'</span>;
+
+<span class="kw">switch</span> (grade) {
+    <span class="kw">case</span> <span class="str">'A'</span>:
+        cout <span class="kw">&lt;&lt;</span> <span class="str">"ممتاز 🔥"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">'B'</span>:
+        cout <span class="kw">&lt;&lt;</span> <span class="str">"جيد جداً 👍"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">'C'</span>:
+        cout <span class="kw">&lt;&lt;</span> <span class="str">"جيد ✅"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">'D'</span>:
+    <span class="kw">case</span> <span class="str">'F'</span>:      <span class="cm">// نفس السلوك لـ D و F</span>
+        cout <span class="kw">&lt;&lt;</span> <span class="str">"راسب ⚠️"</span>;
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        cout <span class="kw">&lt;&lt;</span> <span class="str">"مدخل غير صالح"</span>;
+}</code>
+  </div>
+  <div class="two-col" style="margin-top: 0.5rem;">
+    <div class="def-box amber">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">⚠️ <strong>break في switch</strong></div>
+        <div class="def-box-desc">بدون <code>break</code> يستمر التنفيذ إلى الـ <code>case</code> التالي (fall‑through). هذا قد يكون مقصوداً أحياناً.</div>
+      </div>
+    </div>
+    <div class="def-box blue">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">🧪 <strong>default</strong></div>
+        <div class="def-box-desc">ينفذ إذا لم يطابق أي <code>case</code> — اختياري لكن يُنصح به دائماً.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box warn">
+    <div class="info-box-accent"><span>NOTE</span></div>
+    <div class="info-box-body">
+      <strong>الفرق بين if المتعددة و switch</strong> — <code>switch</code> تصلح عند الاختبار على قيمة واحدة (عدد صحيح، حرف، تعداد) وتكون أسرع وأوضح من <code>if-else if</code> المتسلسل. أما <code>if</code> فتناسب الشروط المعقدة (مقارنات، نطاقات، عمليات منطقية).
+    </div>
+  </div>
+
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الثالثة (حلقات مسماة + switch)</span>
+    <span>صفحة 6</span>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     CHAPTER 4 — الدوال
+     CHAPTER 5 — if else switch exercises
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">تمارين متقدمة</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الثالثة · تطبيقات</div>
+  <div class="chapter-title">تمارين: الحلقات المسماة (Labeled Loops) و switch</div>
+  <div class="chapter-sub">تطبيق عملي على break/continue مع التسميات · جملة التبديل متعددة الفروع</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-blue)">
+
+  <div class="section-heading purple">
+    <h2>📘 ٤ تمارين لتعزيز المفاهيم</h2>
+  </div>
+
+  <div class="exercises-grid">
+
+    <!-- تمرين 1: switch مع fall-through واستخدام default -->
+    <div class="exercise-card">
+      <div class="exercise-header">
+        <div class="exercise-title bold">1) آلة حاسبة بسيطة باستخدام switch</div>
+      </div>
+      <div class="exercise-content">
+        <p>🧮 اكتب برنامجاً يطلب من المستخدم إدخال رقمين (<code>double a, b</code>) ثم حرف العملية (<code>+ , - , * , /</code>). استخدم <strong>switch</strong> لتنفيذ العملية المطلوبة وطباعة النتيجة. تأكد من:</p>
+        <ul class="bullet-list" style="margin-right: 1.2rem;">
+          <li>معالجة حالة القسمة على صفر (إذا كانت العملية <code>/</code> و <code>b == 0</code> اطبع خطأ).</li>
+          <li>استخدام <code>default</code> لحالة إدخال عملية غير صالحة.</li>
+          <li>جرب مفهوم <strong>fall-through</strong> لتوحيد سلوك العمليات المتشابهة (اختياري).</li>
+        </ul>
+        <div class="task-hint"><span>🧪 مثال:</span> الإدخال: 10 5 + → الناتج: 10 + 5 = 15</div>
+      </div>
+    </div>
+
+    <!-- تمرين 2: دمج switch مع حلقة (قائمة خيارات متكررة) -->
+    <div class="exercise-card">
+      <div class="exercise-header">
+        <div class="exercise-title bold">2) قائمة تفاعلية باستخدام do-while و switch</div>
+      </div>
+      <div class="exercise-content">
+        <p>📋 اكتب برنامجاً يعرض قائمة للمستخدم كالتالي:</p>
+        <div class="code-block" style="margin: 0.5rem 0;">
+          <div class="code-label">القائمة</div>
+          <code>1. طباعة "Hello World!"
+2. طباعة التاريخ الحالي (يمكنك طباعة نص وهمي)
+3. التحقق من زوجية رقم يدخله المستخدم
+4. الخروج من البرنامج</code>
+        </div>
+        <p>استخدم <strong>حلقة do-while</strong> لتكرار عرض القائمة حتى يختار المستخدم الخيار (4). داخل الحلقة، استخدم <strong>switch</strong> لتنفيذ الإجراء المناسب لكل خيار. تأكد من التعامل مع الإدخال غير الصالح باستخدام <code>default</code>.</p>
+        <div class="task-hint"><span>⏳ ملاحظة:</span> في الخيار رقم 2، يمكنك طباعة أي نص مثل "2025-04-07". الهدف هو التدرب على switch داخل حلقة.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- نصائح إضافية خاصة بالحلقات المسماة و switch -->
+  <div class="section-heading green" style="margin-top: 0.5rem;">
+    <h2>🧠 تذكير سريع</h2>
+  </div>
+  <div class="info-box warn">
+    <div class="info-box-accent"><span>LABELED LOOPS</span></div>
+    <div class="info-box-body">
+      <code style="font-family:monospace">outer: for(...) { ... break outer; }</code> — يخرج من الحلقة التي تحمل التسمية <strong>outer</strong>، حتى لو كانت متداخلة.  
+      <code style="font-family:monospace">continue outer;</code> — يتخطى التكرار الحالي من الحلقة <strong>outer</strong> وينتقل إلى التكرار التالي مباشرة.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الثالثة (تمارين متقدمة)</span>
+    <span>صفحة 7</span>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 5 — الدوال
 ═══════════════════════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
@@ -1147,7 +1435,7 @@ cin <span class="kw">&gt;&gt;</span> number;</code>
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الرابعة</span>
-    <span>صفحة ٥</span>
+    <span>صفحة 8</span>
   </div>
 </div>
 
@@ -1236,7 +1524,7 @@ ref = <span class="num">200</span>;           <span class="cm">// value أصبح
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الخامسة</span>
-    <span>صفحة ٦</span>
+    <span>صفحة 9</span>
   </div>
 </div>
 
@@ -1393,7 +1681,7 @@ ref = <span class="num">200</span>;           <span class="cm">// value أصبح
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الخامسة (تتمة)</span>
-    <span>صفحة ٧</span>
+    <span>صفحة 10</span>
   </div>
 </div>
 
@@ -1487,7 +1775,7 @@ entities.push_back(<span class="kw">new</span> <span class="typ">Enemy</span>())
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة السادسة</span>
-    <span>صفحة ٨</span>
+    <span>صفحة 11</span>
   </div>
 </div>
 
@@ -1603,7 +1891,7 @@ c.<span class="fn">increment</span>().<span class="fn">increment</span>().<span 
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة السادسة (تتمة)</span>
-    <span>صفحة ٩</span>
+    <span>صفحة 12</span>
   </div>
 </div>
 
@@ -1693,7 +1981,7 @@ Rectangle enemyRect  = {enemy.x, enemy.y, <span class="num">30</span>, <span cla
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة السابعة</span>
-    <span>صفحة ١٠</span>
+    <span>صفحة 11</span>
   </div>
 </div>
 
@@ -1775,7 +2063,7 @@ Rectangle enemyRect  = {enemy.x, enemy.y, <span class="num">30</span>, <span cla
 
   <div class="page-footer">
     <span>NEXT Training Center — الوحدة الثامنة</span>
-    <span>صفحة ١١</span>
+    <span>صفحة 12</span>
   </div>
 </div>
 
