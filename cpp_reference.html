@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مرجع البرمجة بـ C++ — NEXT Training Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     EDIT GUIDE — ما تحتاج تعرفه تعدّل على الملف
+     ═══════════════════════════════════════════════════════════════
+
+  COLORS (ألوان) — ابحث عن :root وعدّل أي لون
+    --acc-purple   → البنفسجي الأساسي
+    --acc-blue     → الأزرق
+    --acc-green    → الأخضر
+    --acc-amber    → البرتقالي الذهبي
+    --acc-coral    → الكوراليني
+    --bg-page      → لون خلفية الصفحة
+    --text-ink     → لون النص الرئيسي
+
+  FONTS (خطوط) — ابحث عن font-family
+    Amiri          → نصوص عربية (الخط الأكاديمي الجميل)
+    Cairo          → عناوين عربية
+    Fira Code      → كود برمجي
+
+  CONTENT (محتوى) — كل نص بين وسوم <p> و<h> تقدر تعدله مباشرة
+  CODE BLOCKS — ابحث عن <pre class="code-block"> وعدّل الكود
+
+  PRINT — اضغط Ctrl+P أو Cmd+P وحدد "Save as PDF"
+          الـ CSS راح يعدّل الصفحات تلقائياً لـ A4
+
+═══════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── CSS Variables — edit colors here ───────────────────────── */
+:root {
+  --acc-purple:    #7F77DD;
+  --acc-purple-bg: #EEEDFE;
+  --acc-purple-dk: #3C3489;
+  --acc-blue:      #378ADD;
+  --acc-blue-bg:   #E6F1FB;
+  --acc-blue-dk:   #0C447C;
+  --acc-green:     #1D9E75;
+  --acc-green-bg:  #E1F5EE;
+  --acc-green-dk:  #085041;
+  --acc-amber:     #BA7517;
+  --acc-amber-bg:  #FAEEDA;
+  --acc-coral:     #D85A30;
+  --acc-coral-bg:  #FAECE7;
+  --acc-coral-dk:  #712B13;
+  --bg-page:       #FAFAF8;
+  --bg-secondary:  #F1EFE8;
+  --text-ink:      #1a1a1a;
+  --text-muted:    #6b6b6b;
+  --rule:          #e0ddd7;
+  --cover-bg:      #1a1a1a;
+  --cover-accent:  #7F77DD;
+  --cover-gold:    #F5C842;
+}
+
+/* ── Reset & base ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Amiri', 'Cairo', serif;
+  font-size: 11pt;
+  line-height: 1.8;
+  color: var(--text-ink);
+  background: #e8e6e0;
+  direction: rtl;
+}
+
+/* ── Page wrapper — simulates A4 ─────────────────────────────── */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 12mm auto;
+  background: var(--bg-page);
+  padding: 22mm 18mm 28mm 18mm;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  page-break-after: always;
+}
+
+/* ── Cover page ──────────────────────────────────────────────── */
+.page-cover {
+  background: var(--cover-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 18mm 20mm;
+  min-height: 297mm;
+}
+.cover-accent-bar {
+  position: absolute;
+  right: 0; top: 0;
+  width: 8mm; height: 100%;
+  background: var(--cover-accent);
+}
+.cover-accent-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 100%; height: 40%;
+  background: var(--cover-gold);
+}
+.cover-institution {
+  font-family: 'Cairo', sans-serif;
+  font-size: 11pt;
+  color: #888880;
+  margin-bottom: 6mm;
+}
+.cover-title-main {
+  font-family: 'Cairo', sans-serif;
+  font-size: 42pt;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 2mm;
+}
+.cover-title-sub {
+  font-family: 'Cairo', sans-serif;
+  font-size: 36pt;
+  font-weight: 700;
+  color: var(--cover-accent);
+  margin-bottom: 6mm;
+}
+.cover-desc {
+  font-size: 13pt;
+  color: #a0a09a;
+  margin-bottom: 8mm;
+}
+.cover-rule {
+  width: 100%;
+  height: 1.5px;
+  background: var(--cover-accent);
+  margin: 4mm 0;
+}
+.cover-meta {
+  font-size: 11pt;
+  color: #c0bfb8;
+  line-height: 2;
+}
+.cover-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: #111;
+  padding: 8mm 20mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cover-bottom span {
+  font-size: 9pt;
+  color: #555550;
+}
+
+/* ── Page header & footer ────────────────────────────────────── */
+.page-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: var(--text-ink);
+  padding: 3mm 18mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-header .header-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 9pt;
+  font-weight: 700;
+  color: #ffffff;
+}
+.page-header .header-chapter {
+  font-size: 8pt;
+  color: #a0a0a0;
+}
+.page-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  border-top: 0.5px solid var(--rule);
+  padding: 2.5mm 18mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-footer span {
+  font-size: 8pt;
+  color: var(--text-muted);
+}
+
+/* ── Chapter heading ─────────────────────────────────────────── */
+.chapter-label {
+  font-family: 'Cairo', sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  color: var(--acc-purple);
+  margin-bottom: 1.5mm;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 2mm;
+}
+.chapter-label::before {
+  content: '';
+  display: inline-block;
+  width: 3mm;
+  height: 3mm;
+  border-radius: 50%;
+  background: var(--acc-purple);
+}
+.chapter-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 24pt;
+  font-weight: 700;
+  color: var(--text-ink);
+  line-height: 1.3;
+  margin-bottom: 1mm;
+  letter-spacing: -0.01em;
+}
+.chapter-sub {
+  font-size: 11pt;
+  color: var(--text-muted);
+  margin-bottom: 5mm;
+}
+.chapter-rule {
+  border: none;
+  border-top: 1.5px solid var(--acc-purple);
+  margin-bottom: 6mm;
+}
+
+/* ── Section heading ─────────────────────────────────────────── */
+.section-heading {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 5mm 0 3mm 0;
+  position: relative;
+  width: 100%;
+}
+.section-heading h2 {
+  font-family: 'Cairo', sans-serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--text-ink);
+  background: var(--bg-secondary);
+  padding: 2mm 4mm 2mm 8mm;
+  border-radius: 4px;
+  border-right: 2.5px solid var(--acc-purple);
+  width: 100%;
+}
+.section-heading.blue h2  { border-color: var(--acc-blue);  background: var(--acc-blue-bg); }
+.section-heading.green h2 { border-color: var(--acc-green); background: var(--acc-green-bg); }
+.section-heading.amber h2 { border-color: var(--acc-amber); background: var(--acc-amber-bg); }
+.section-heading.coral h2 { border-color: var(--acc-coral); background: var(--acc-coral-bg); }
+.section-heading.gray h2  { border-color: var(--text-muted); background: var(--bg-secondary); }
+
+/* ── Body text ───────────────────────────────────────────────── */
+.body-text {
+  font-size: 10.5pt;
+  line-height: 1.9;
+  color: var(--text-ink);
+  margin-bottom: 3mm;
+}
+.body-muted {
+  font-size: 9pt;
+  color: var(--text-muted);
+  margin-bottom: 2mm;
+}
+
+/* ── Info / tip boxes ────────────────────────────────────────── */
+.info-box {
+  display: flex;
+  gap: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 3mm 0;
+}
+.info-box-accent {
+  width: 5mm;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.info-box-accent span {
+  font-size: 7pt;
+  font-weight: 700;
+  color: #fff;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 0.08em;
+}
+.info-box-body {
+  flex: 1;
+  padding: 3mm 4mm;
+  font-size: 9.5pt;
+  line-height: 1.7;
+}
+.info-box.tip   { background: var(--acc-green-bg); }
+.info-box.tip   .info-box-accent { background: var(--acc-green); }
+.info-box.tip   .info-box-body   { color: var(--acc-green-dk); }
+.info-box.warn  { background: var(--acc-amber-bg); }
+.info-box.warn  .info-box-accent { background: var(--acc-amber); }
+.info-box.warn  .info-box-body   { color: #412402; }
+.info-box.note  { background: var(--acc-blue-bg); }
+.info-box.note  .info-box-accent { background: var(--acc-blue); }
+.info-box.note  .info-box-body   { color: var(--acc-blue-dk); }
+
+/* ── Definition boxes ────────────────────────────────────────── */
+.def-box {
+  background: var(--bg-secondary);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 2mm 0;
+  display: flex;
+  gap: 0;
+}
+.def-box-accent {
+  width: 5mm;
+  background: var(--acc-purple);
+  flex-shrink: 0;
+}
+.def-box-body {
+  flex: 1;
+  padding: 2.5mm 4mm;
+}
+.def-box-term {
+  font-family: 'Cairo', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: var(--acc-purple);
+  margin-bottom: 1mm;
+}
+.def-box-desc {
+  font-size: 9.5pt;
+  color: var(--text-ink);
+  line-height: 1.7;
+}
+.def-box.blue .def-box-accent { background: var(--acc-blue); }
+.def-box.blue .def-box-term   { color: var(--acc-blue-dk); }
+.def-box.green .def-box-accent { background: var(--acc-green); }
+.def-box.green .def-box-term   { color: var(--acc-green-dk); }
+.def-box.coral .def-box-accent { background: var(--acc-coral); }
+.def-box.coral .def-box-term   { color: var(--acc-coral-dk); }
+.def-box.amber .def-box-accent { background: var(--acc-amber); }
+.def-box.amber .def-box-term   { color: #633806; }
+
+/* ── Code blocks ─────────────────────────────────────────────── */
+.code-block {
+  background: #1e1e2e;
+  color: #f8f8f2;          /* Dracula foreground — makes plain tokens visible */
+  border-radius: 6px;
+  padding: 4mm 5mm;
+  margin: 3mm 0;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 8.5pt;
+  line-height: 1.7;
+  direction: ltr;
+  text-align: left;
+  overflow-x: auto;
+  position: relative;
+}
+.code-block .code-label {
+  position: absolute;
+  top: 2mm; left: 4mm;
+  font-size: 7.5pt;
+  color: #6b6baa;
+  font-family: 'Amiri', serif;
+  direction: rtl;
+}
+.code-block code {
+  display: block;
+  margin-top: 4mm;
+  white-space: pre;
+  counter-reset: line;
+}
+.code-block code > span.line {
+  display: block;
+  position: relative;
+  padding-right: 8mm;
+}
+.code-block code > span.line::before {
+  counter-increment: line;
+  content: counter(line);
+  position: absolute;
+  right: 0;
+  width: 6mm;
+  color: #44475a;
+  font-size: 7.5pt;
+  text-align: left;
+  user-select: none;
+  border-right: 1px solid #44475a;
+  padding-left: 1mm;
+}
+/* Syntax colors — Dracula theme */
+.kw   { color: #ff79c6; font-weight: 600; }   /* keywords — pink */
+.cm   { color: #6272a4; font-style: italic; }  /* comments — muted indigo */
+.str  { color: #f1fa8c; }                      /* strings — yellow */
+.num  { color: #bd93f9; }                      /* numbers / preprocessor — purple */
+.fn   { color: #50fa7b; }                      /* function names — green */
+.typ  { color: #8be9fd; }                      /* types — cyan */
+
+/* ── Two-column layout ───────────────────────────────────────── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4mm;
+  margin: 2mm 0;
+}
+
+/* ── Tables ──────────────────────────────────────────────────── */
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9pt;
+  margin: 3mm 0;
+}
+.ref-table th {
+  background: var(--text-ink);
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  padding: 2.5mm 3mm;
+  text-align: right;
+  font-size: 8.5pt;
+}
+.ref-table td {
+  padding: 2.5mm 3mm;
+  border-bottom: 0.5px solid var(--rule);
+  vertical-align: top;
+  text-align: right;
+}
+.ref-table tr:nth-child(even) td { background: var(--bg-secondary); }
+.ref-table .code-cell {
+  font-family: 'Fira Code', monospace;
+  direction: ltr;
+  text-align: left;
+  color: var(--acc-purple-dk);
+  font-size: 8pt;
+}
+
+/* ── Bullet list ─────────────────────────────────────────────── */
+.bullet-list {
+  list-style: none;
+  margin: 2mm 0;
+  padding: 0;
+}
+.bullet-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 3mm;
+  font-size: 10pt;
+  line-height: 1.7;
+  margin-bottom: 1.5mm;
+  color: var(--text-ink);
+}
+.bullet-list li::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--acc-purple);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.bullet-list.blue  li::before { background: var(--acc-blue); }
+.bullet-list.green li::before { background: var(--acc-green); }
+.bullet-list.coral li::before { background: var(--acc-coral); }
+.bullet-list.amber li::before { background: var(--acc-amber); }
+
+/* ── Lecture / intro specific ────────────────────────────────── */
+.intro-hero {
+  background: var(--cover-bg);
+  border-radius: 8px;
+  padding: 6mm 7mm;
+  margin: 3mm 0;
+  text-align: center;
+  color: #ffffff;
+}
+.intro-hero .hero-label {
+  font-size: 9pt;
+  color: var(--cover-gold);
+  letter-spacing: 0.1em;
+  font-family: 'Cairo', sans-serif;
+  margin-bottom: 2mm;
+}
+.intro-hero .hero-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 20pt;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5mm;
+}
+.intro-hero .hero-sub {
+  font-size: 11pt;
+  color: var(--cover-accent);
+}
+
+.lang-spectrum {
+  margin: 3mm 0;
+  direction: ltr;
+}
+.spectrum-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(to right, #E24B4A, #EF9F27, #97C459, #1D9E75);
+  margin-bottom: 2mm;
+  position: relative;
+}
+.spectrum-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8pt;
+  direction: rtl;
+}
+.spectrum-labels .left-label  { color: #E24B4A; }
+.spectrum-labels .right-label { color: #1D9E75; }
+.spectrum-langs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2mm;
+  font-family: 'Fira Code', monospace;
+  font-size: 8pt;
+}
+.spectrum-langs .lang-tag {
+  background: var(--bg-secondary);
+  padding: 1mm 2.5mm;
+  border-radius: 3px;
+  font-size: 7.5pt;
+  color: var(--text-ink);
+}
+.spectrum-langs .lang-tag.highlight {
+  background: var(--acc-purple);
+  color: #fff;
+  font-weight: 700;
+}
+
+.why-card {
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 3mm;
+  display: flex;
+  gap: 0;
+}
+.why-card-num {
+  width: 10mm;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cairo', sans-serif;
+  font-size: 16pt;
+  font-weight: 700;
+  color: #fff;
+}
+.why-card-body {
+  flex: 1;
+  padding: 2.5mm 4mm;
+}
+.why-card-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 11pt;
+  font-weight: 700;
+  margin-bottom: 1mm;
+}
+.why-card-desc {
+  font-size: 9.5pt;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 3mm;
+  margin-bottom: 3mm;
+  position: relative;
+}
+.roadmap-item::before {
+  content: '';
+  position: absolute;
+  right: 4.5mm;
+  top: 8mm;
+  bottom: -3mm;
+  width: 1px;
+  background: var(--rule);
+}
+.roadmap-item:last-child::before { display: none; }
+.roadmap-badge {
+  width: 9mm; height: 9mm;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cairo', sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.roadmap-content {
+  flex: 1;
+  background: #fff;
+  border: 0.5px solid var(--rule);
+  border-radius: 5px;
+  padding: 2mm 3.5mm;
+}
+.roadmap-title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin-bottom: 0.5mm;
+}
+.roadmap-desc {
+  font-size: 9pt;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Print styles ────────────────────────────────────────────── */
+@media print {
+  body { background: white; }
+  .page {
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+    padding: 18mm 16mm 22mm 16mm;
+    min-height: auto;
+  }
+  .page-cover { min-height: 100vh; }
+  .no-print { display: none !important; }
+}
+
+/* ── Print button ────────────────────────────────────────────── */
+.print-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: var(--acc-purple);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13pt;
+  cursor: pointer;
+  z-index: 999;
+  direction: rtl;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.print-btn:hover { background: var(--acc-purple-dk); }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 طباعة / حفظ PDF</button>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COVER PAGE
+═══════════════════════════════════════════════════════════════ -->
+<div class="page page-cover">
+  <div class="cover-accent-bar"></div>
+
+  <div class="cover-institution">NEXT Training Center — مقرر أساسيات البرمجة</div>
+
+  <div class="cover-title-main">مرجع</div>
+  <div class="cover-title-sub">البرمجة بـ C++</div>
+  <div class="cover-desc">دليل المراجعة الشامل للمبتدئين</div>
+
+  <div class="cover-rule"></div>
+
+  <div class="cover-meta">
+    ٨ وحدات · ٣٢ محاضرة · شهران<br>
+    يغطي: البرمجة الإجرائية، كائنية التوجه، المؤشرات<br>
+    مشروع لعبة بـ Raylib · مسارات مهنية
+  </div>
+
+  <div class="cover-bottom">
+    <span>C++ Reference Guide — Arabic Edition</span>
+    <span>المدرب : روان تمو</span>
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════════════════════════
+     TABLE OF CONTENTS
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">فهرس المحتويات</span>
+  </div>
+
+  <div class="chapter-label" style="margin-top:4mm">الدليل الشامل</div>
+  <div class="chapter-title">فهرس المحتويات</div>
+  <div class="chapter-sub">٨ وحدات · ملحقان · تحديات برمجية · مرجع سريع</div>
+  <hr class="chapter-rule">
+
+  <table style="width:100%;border-collapse:collapse;margin-top:4mm">
+    <tbody>
+      <!-- Row macro: unit title dots page -->
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0;width:8mm">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-purple);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">١</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">مقدمة في لغات البرمجة</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted);width:60mm">المُجمَّعة · المُفسَّرة · الكتابة الساكنة والديناميكية</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-purple);font-weight:700;width:10mm">٢</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-blue);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٢</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">أساسيات C++</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">المتغيرات · أنواع البيانات · الإدخال والإخراج · العمليات</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-blue);font-weight:700">٣</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-blue);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٣</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">التحكم في تدفق البرنامج</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">الشروط · الحلقات · break و continue</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-blue);font-weight:700">٤</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-green);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٤</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">الدوال</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">التعريف · الاستدعاء · النطاق · التمرير بالقيمة والمرجع</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-green);font-weight:700">٥</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-green);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٥</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">المصفوفات والذاكرة</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">المصفوفات · vector · المكدس والكومة · المؤشرات</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-green);font-weight:700">٦</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-coral);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٦</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">البرمجة كائنية التوجه</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">الفئات · التغليف · الوراثة · تعددية الأشكال</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-coral);font-weight:700">٧</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:var(--acc-amber);color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٧</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">مشروع اللعبة بـ Raylib</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">حلقة اللعبة · الرسم · الإدخال · الكشف عن التصادم</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-amber);font-weight:700">٨</td>
+      </tr>
+      <tr style="border-bottom:0.5px solid var(--rule)">
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:50%;background:#888780;color:#fff;font-family:'Cairo',sans-serif;font-size:8pt;font-weight:700">٨</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">المسارات المهنية ولغات البرمجة</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">الحقول المهنية · أي لغة تستخدم أين · خطوتك التالية</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:#888780;font-weight:700">٩</td>
+      </tr>
+      <tr>
+        <td style="padding:3mm 0">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:7mm;height:7mm;border-radius:4px;background:var(--acc-purple-bg);color:var(--acc-purple-dk);font-family:'Cairo',sans-serif;font-size:7.5pt;font-weight:700;border:1px solid var(--acc-purple)">أ</span>
+        </td>
+        <td style="padding:3mm 3mm;font-family:'Cairo',sans-serif;font-size:11pt;font-weight:700;color:var(--text-ink)">الملحق — مرجع سريع</td>
+        <td style="padding:3mm 0;font-size:9pt;color:var(--text-muted)">جميع الأوامر الأساسية في صفحة واحدة</td>
+        <td style="padding:3mm 0;text-align:left;font-family:'Fira Code',monospace;font-size:10pt;color:var(--acc-purple);font-weight:700">١٠</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:6mm;background:var(--bg-secondary);border-radius:6px;padding:4mm 5mm;border-right:3px solid var(--acc-purple)">
+    <div style="font-family:'Cairo',sans-serif;font-size:10pt;font-weight:700;color:var(--acc-purple-dk);margin-bottom:1.5mm">كيفية استخدام هذا الدليل</div>
+    <div style="font-size:9.5pt;line-height:1.8;color:var(--text-ink)">
+      كل وحدة مستقلة — يمكنك العودة لأي صفحة مباشرة. <strong>صناديق TIP</strong> باللون الأخضر تحتوي نصائح عملية. <strong>صناديق NOTE</strong> باللون البرتقالي تنبّهك لأخطاء شائعة. <strong>صناديق INFO</strong> باللون الأزرق توضّح مفاهيم إضافية. الملحق في آخر الدليل مصمّم للطباعة والتوزيع من الأسبوع الأول.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — فهرس المحتويات</span>
+    <span>صفحة ١</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 1 — مقدمة في لغات البرمجة
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">مقدمة في لغات البرمجة</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الأولى</div>
+  <div class="chapter-title">مقدمة في لغات البرمجة</div>
+  <div class="chapter-sub">ما هي لغة البرمجة؟ النظرية الأساسية قبل ما نكتب سطر كود</div>
+  <hr class="chapter-rule">
+
+  <div class="section-heading blue">
+    <h2>المُجمَّعة مقابل المُفسَّرة</h2>
+  </div>
+
+  <div class="two-col">
+    <div class="def-box blue">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">لغات مُجمَّعة (Compiled)</div>
+        <div class="def-box-desc">تُحوَّل الشفرة كاملةً إلى ملف تنفيذي قبل التشغيل. النتيجة: سرعة عالية جداً. مثال: C++، Rust، Go</div>
+      </div>
+    </div>
+    <div class="def-box green">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">لغات مُفسَّرة (Interpreted)</div>
+        <div class="def-box-desc">تُقرأ وتُنفَّذ سطراً بسطر عبر مفسِّر. مرونة أكبر وتطوير أسرع. مثال: Python، JavaScript، Ruby</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading">
+    <h2>الكتابة الساكنة مقابل الديناميكية</h2>
+  </div>
+
+  <p class="body-text">في <strong>الكتابة الساكنة (Static Typing)</strong> يجب تحديد نوع كل متغير وقت كتابة الكود. يكتشف المُجمِّع الأخطاء قبل تشغيل البرنامج. C++ ساكنة النوع.</p>
+  <p class="body-text">في <strong>الكتابة الديناميكية (Dynamic Typing)</strong> يُحدَّد نوع المتغير أثناء التشغيل. أكثر مرونة لكن الأخطاء تظهر متأخراً. Python ديناميكية النوع.</p>
+
+  <div class="info-box note">
+    <div class="info-box-accent"><span>INFO</span></div>
+    <div class="info-box-body">
+      في C++ تكتب: <code style="font-family:monospace">int age = 25;</code> — النوع int مُحدَّد ولا يتغير.<br>
+      في Python تكتب: <code style="font-family:monospace">age = 25</code> — المُفسِّر يكتشف النوع تلقائياً.
+    </div>
+  </div>
+
+  <div class="section-heading amber">
+    <h2>الكتابة القوية مقابل الضعيفة</h2>
+  </div>
+
+  <div class="two-col">
+    <div class="def-box amber">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">كتابة قوية (Strong)</div>
+        <div class="def-box-desc">لا يمكن خلط الأنواع دون تحويل صريح. لا تجمع رقم مع نص تلقائياً. C++ قوية الكتابة.</div>
+      </div>
+    </div>
+    <div class="def-box coral">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">كتابة ضعيفة (Weak)</div>
+        <div class="def-box-desc">تسمح ببعض التحويلات التلقائية. في JavaScript: <span style="font-family:monospace">'5' + 3</span> تعطي <span style="font-family:monospace">'53'</span> بدلاً من خطأ.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading green">
+    <h2>البرمجة الإجرائية والكائنية والدوالية</h2>
+  </div>
+
+  <ul class="bullet-list">
+    <li><strong>الإجرائية (Procedural):</strong> الكود عبارة عن سلسلة خطوات تُنفَّذ بالترتيب. نبدأ بها في هذا المقرر.</li>
+    <li><strong>كائنية التوجه (OOP):</strong> نُنظِّم الكود في وحدات تُسمَّى كائنات تجمع البيانات والسلوك معاً.</li>
+    <li><strong>الدوالية (Functional):</strong> نعامل الدوال كقيم يمكن تمريرها. متقدمة — نذكرها مرجعاً فقط.</li>
+  </ul>
+
+  <div class="info-box tip">
+    <div class="info-box-accent"><span>TIP</span></div>
+    <div class="info-box-body">
+      C++ تدعم الثلاثة. هاد يعني إنك رح تتعلم التفكير الإجرائي أول، ثم الكائني — وبعد ما تتعلمهم رح تفهم ليش اخترع الناس كل طريقة.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الأولى</span>
+    <span>صفحة ٢</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 2 — أساسيات C++
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">أساسيات C++</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الثانية</div>
+  <div class="chapter-title">أساسيات C++</div>
+  <div class="chapter-sub">المتغيرات · أنواع البيانات · الإدخال والإخراج · العمليات</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-blue)">
+
+  <div class="section-heading blue">
+    <h2>بنية برنامج C++ الأساسية</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">أول برنامج في C++</div>
+    <code><span class="num">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> std;
+
+<span class="typ">int</span> <span class="fn">main</span>() {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"مرحباً بالعالم"</span> <span class="kw">&lt;&lt;</span> endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code>
+  </div>
+
+  <ul class="bullet-list blue">
+    <li><code style="font-family:monospace">#include &lt;iostream&gt;</code> — يُدرج مكتبة الإدخال والإخراج الأساسية.</li>
+    <li><code style="font-family:monospace">using namespace std;</code> — يتيح استخدام cout و cin مباشرة.</li>
+    <li><code style="font-family:monospace">int main()</code> — نقطة البداية لكل برنامج C++.</li>
+    <li><code style="font-family:monospace">return 0;</code> — تعني أن البرنامج انتهى بنجاح.</li>
+  </ul>
+
+  <div class="section-heading">
+    <h2>أنواع البيانات الأساسية</h2>
+  </div>
+
+  <table class="ref-table">
+    <thead>
+      <tr><th>النوع</th><th>المعنى</th><th>مثال</th><th>الحجم</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>int</strong></td><td>عدد صحيح</td><td class="code-cell">int age = 25;</td><td>4 بايت</td></tr>
+      <tr><td><strong>float</strong></td><td>عدد عشري (32 بت)</td><td class="code-cell">float pi = 3.14f;</td><td>4 بايت</td></tr>
+      <tr><td><strong>double</strong></td><td>عدد عشري (64 بت)</td><td class="code-cell">double x = 3.14159;</td><td>8 بايت</td></tr>
+      <tr><td><strong>bool</strong></td><td>قيمة منطقية</td><td class="code-cell">bool ok = true;</td><td>1 بايت</td></tr>
+      <tr><td><strong>char</strong></td><td>حرف واحد</td><td class="code-cell">char c = 'A';</td><td>1 بايت</td></tr>
+      <tr><td><strong>string</strong></td><td>نص</td><td class="code-cell">string s = "مرحبا";</td><td>متغير</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-heading green">
+    <h2>الإدخال والإخراج: cout و cin</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">cout و cin</div>
+    <code><span class="cm">// الإخراج (طباعة على الشاشة)</span>
+cout <span class="kw">&lt;&lt;</span> <span class="str">"اسمك: "</span> <span class="kw">&lt;&lt;</span> name <span class="kw">&lt;&lt;</span> endl;
+
+<span class="cm">// الإدخال (قراءة من المستخدم)</span>
+<span class="typ">int</span> number;
+cout <span class="kw">&lt;&lt;</span> <span class="str">"أدخل رقماً: "</span>;
+cin <span class="kw">&gt;&gt;</span> number;</code>
+  </div>
+
+  <div class="section-heading amber">
+    <h2>العمليات الحسابية والمقارنة</h2>
+  </div>
+
+  <table class="ref-table">
+    <thead>
+      <tr><th>النوع</th><th>الرموز</th><th>الوصف</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>حسابية</td><td class="code-cell">+ - * / %</td><td>الجمع والطرح والضرب والقسمة والباقي</td></tr>
+      <tr><td>مقارنة</td><td class="code-cell">== != &lt; &gt; &lt;= &gt;=</td><td>تعيد true أو false</td></tr>
+      <tr><td>منطقية</td><td class="code-cell">&amp;&amp; || !</td><td>و / أو / ليس — لدمج الشروط</td></tr>
+      <tr><td>إسناد مختصر</td><td class="code-cell">+= -= *= /=</td><td><span style="font-family:monospace">x += 5</span> تعني <span style="font-family:monospace">x = x + 5</span></td></tr>
+      <tr><td>زيادة ونقصان</td><td class="code-cell">++ --</td><td>x++ تزيد x بمقدار واحد</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box warn">
+    <div class="info-box-accent"><span>NOTE</span></div>
+    <div class="info-box-body">
+      <strong>خطأ شائع:</strong> قسمة عددين صحيحين تعطي عدداً صحيحاً. <code style="font-family:monospace">7 / 2</code> تعطي <code style="font-family:monospace">3</code> وليس <code style="font-family:monospace">3.5</code>. لتجنب هذا استخدم <code style="font-family:monospace">7.0 / 2</code> أو حوّل النوع: <code style="font-family:monospace">(double)7 / 2</code>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الثانية</span>
+    <span>صفحة ٣</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 3 — التحكم في تدفق البرنامج
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">التحكم في تدفق البرنامج</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الثالثة</div>
+  <div class="chapter-title">التحكم في تدفق البرنامج</div>
+  <div class="chapter-sub">الشروط · الحلقات · break و continue</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-blue)">
+
+  <div class="section-heading blue">
+    <h2>جملة if / else if / else</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">if / else if / else</div>
+    <code><span class="typ">int</span> score = <span class="num">85</span>;
+
+<span class="kw">if</span> (score >= <span class="num">90</span>) {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"ممتاز"</span>;
+} <span class="kw">else if</span> (score >= <span class="num">75</span>) {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"جيد جداً"</span>;
+} <span class="kw">else if</span> (score >= <span class="num">60</span>) {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"جيد"</span>;
+} <span class="kw">else</span> {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"راسب"</span>;
+}</code>
+  </div>
+
+  <div class="info-box warn">
+    <div class="info-box-accent"><span>NOTE</span></div>
+    <div class="info-box-body">
+      <strong>خطأ شائع:</strong> <code style="font-family:monospace">if (x = 5)</code> هو تعيين وليس مقارنة. الصحيح: <code style="font-family:monospace">if (x == 5)</code>
+    </div>
+  </div>
+
+  <div class="section-heading">
+    <h2>حلقة for وwhile وdo-while</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">الحلقات الثلاث</div>
+    <code><span class="cm">// for — تعرف عدد التكرارات</span>
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">1</span>; i <= <span class="num">10</span>; i++) {
+    cout <span class="kw">&lt;&lt;</span> i <span class="kw">&lt;&lt;</span> <span class="str">" "</span>;
+}
+
+<span class="cm">// while — تتكرر طالما الشرط صحيح</span>
+<span class="typ">int</span> n = <span class="num">1</span>;
+<span class="kw">while</span> (n <= <span class="num">5</span>) {
+    cout <span class="kw">&lt;&lt;</span> n <span class="kw">&lt;&lt;</span> endl;
+    n++;
+}
+
+<span class="cm">// do-while — تُنفَّذ مرة على الأقل</span>
+<span class="typ">int</span> x;
+<span class="kw">do</span> {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"أدخل رقماً موجباً: "</span>;
+    cin <span class="kw">&gt;&gt;</span> x;
+} <span class="kw">while</span> (x <= <span class="num">0</span>);</code>
+  </div>
+
+  <div class="two-col" style="margin-top:3mm">
+    <div class="def-box amber">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">break</div>
+        <div class="def-box-desc">يخرج من الحلقة فوراً — كأنك تفتح باب الطوارئ.</div>
+      </div>
+    </div>
+    <div class="def-box blue">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">continue</div>
+        <div class="def-box-desc">يتخطى باقي الكود في هذه الدورة ويبدأ الدورة التالية.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الثالثة</span>
+    <span>صفحة ٤</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 4 — الدوال
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">الدوال</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الرابعة</div>
+  <div class="chapter-title">الدوال</div>
+  <div class="chapter-sub">تعريفها · استدعاؤها · النطاق · التمرير بالقيمة والمرجع</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-green)">
+
+  <div class="section-heading green">
+    <h2>بنية الدالة واستدعاؤها</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">تعريف الدوال واستدعاؤها</div>
+    <code><span class="cm">// نوع_الإرجاع اسم_الدالة (المعاملات)</span>
+<span class="typ">int</span> <span class="fn">add</span>(<span class="typ">int</span> a, <span class="typ">int</span> b) {
+    <span class="kw">return</span> a + b;
+}
+
+<span class="cm">// دالة لا تُرجع قيمة (void)</span>
+<span class="kw">void</span> <span class="fn">greet</span>(string name) {
+    cout <span class="kw">&lt;&lt;</span> <span class="str">"مرحباً "</span> <span class="kw">&lt;&lt;</span> name <span class="kw">&lt;&lt;</span> endl;
+}
+
+<span class="cm">// الاستدعاء في main()</span>
+<span class="typ">int</span> result = <span class="fn">add</span>(<span class="num">10</span>, <span class="num">5</span>);  <span class="cm">// result = 15</span>
+<span class="fn">greet</span>(<span class="str">"أحمد"</span>);</code>
+  </div>
+
+  <div class="section-heading">
+    <h2>التمرير بالقيمة مقابل التمرير بالمرجع</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">بالقيمة vs بالمرجع</div>
+    <code><span class="cm">// بالقيمة — نسخة تُرسَل، الأصلي لا يتغير</span>
+<span class="kw">void</span> <span class="fn">doubleIt</span>(<span class="typ">int</span> x) {
+    x = x * <span class="num">2</span>;  <span class="cm">// لن يؤثر على المتغير الأصلي</span>
+}
+
+<span class="cm">// بالمرجع — المتغير الأصلي يتغير</span>
+<span class="kw">void</span> <span class="fn">doubleItRef</span>(<span class="typ">int</span>&amp; x) {
+    x = x * <span class="num">2</span>;  <span class="cm">// يغير المتغير الأصلي</span>
+}
+
+<span class="typ">int</span> num = <span class="num">5</span>;
+<span class="fn">doubleIt</span>(num);     <span class="cm">// num لا يزال 5</span>
+<span class="fn">doubleItRef</span>(num);  <span class="cm">// num أصبح 10</span></code>
+  </div>
+
+  <div class="two-col" style="margin-top:3mm">
+    <div class="def-box green">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">نطاق المتغير (Scope)</div>
+        <div class="def-box-desc">المتغير المُعلَن داخل دالة لا يُرى خارجها. تجنّب المتغيرات العامة قدر الإمكان.</div>
+      </div>
+    </div>
+    <div class="def-box blue">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">تحميل زائد (Overloading)</div>
+        <div class="def-box-desc">يمكن أن يكون لدوال متعددة نفس الاسم إذا اختلفت أنواع أو عدد معاملاتها.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الرابعة</span>
+    <span>صفحة ٥</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 5 — المصفوفات والذاكرة
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">المصفوفات والذاكرة</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الخامسة</div>
+  <div class="chapter-title">المصفوفات والذاكرة</div>
+  <div class="chapter-sub">المصفوفات · vector · المكدس والكومة · المؤشرات والمراجع</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-green)">
+
+  <div class="section-heading green">
+    <h2>المصفوفات (Arrays) و std::vector</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">المصفوفات و vector</div>
+    <code><span class="cm">// مصفوفة ثابتة الحجم</span>
+<span class="typ">int</span> grades[<span class="num">5</span>] = {<span class="num">90</span>, <span class="num">85</span>, <span class="num">78</span>, <span class="num">92</span>, <span class="num">88</span>};
+cout <span class="kw">&lt;&lt;</span> grades[<span class="num">0</span>];  <span class="cm">// 90 — العنصر الأول</span>
+
+<span class="cm">// vector — المصفوفة الديناميكية المفضّلة</span>
+vector&lt;<span class="typ">int</span>&gt; numbers;
+numbers.push_back(<span class="num">10</span>);
+numbers.push_back(<span class="num">20</span>);
+cout <span class="kw">&lt;&lt;</span> numbers.size();  <span class="cm">// 2</span>
+numbers.pop_back();       <span class="cm">// حذف آخر عنصر</span></code>
+  </div>
+
+  <div class="info-box warn">
+    <div class="info-box-accent"><span>NOTE</span></div>
+    <div class="info-box-body">
+      <strong>خطأ خطير:</strong> <code style="font-family:monospace">grades[5]</code> في مصفوفة حجمها 5 — خروج عن النطاق. C++ لا تتحقق من هذا تلقائياً — سلوك غير محدد أو انهيار في البرنامج.
+    </div>
+  </div>
+
+  <div class="section-heading">
+    <h2>المكدس والكومة (Stack & Heap)</h2>
+  </div>
+
+  <div class="two-col">
+    <div class="def-box">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">المكدس (Stack)</div>
+        <div class="def-box-desc">تلقائي، سريع، محدود الحجم. المتغيرات المحلية تُخزَّن هنا. تُحرَّر تلقائياً عند نهاية الدالة.</div>
+      </div>
+    </div>
+    <div class="def-box coral">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">الكومة (Heap)</div>
+        <div class="def-box-desc">يدوي، غير محدود نسبياً. تُخصَّص بـ new وتُحرَّر بـ delete. النسيان يسبب تسريب ذاكرة.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading blue">
+    <h2>المؤشرات والمراجع</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">المؤشرات والمراجع</div>
+    <code><span class="typ">int</span> value = <span class="num">42</span>;
+
+<span class="cm">// المؤشر — يُخزِّن عنوان متغير</span>
+<span class="typ">int</span>* ptr = &amp;value;   <span class="cm">// & تُعطي عنوان value</span>
+cout <span class="kw">&lt;&lt;</span> *ptr;        <span class="cm">// 42 — * تتبع المؤشر للقيمة</span>
+*ptr = <span class="num">100</span>;         <span class="cm">// value أصبحت 100</span>
+
+<span class="cm">// الكومة</span>
+<span class="typ">int</span>* p = <span class="kw">new</span> <span class="typ">int</span>(<span class="num">5</span>); <span class="cm">// تخصيص في الكومة</span>
+<span class="kw">delete</span> p;            <span class="cm">// تحرير الذاكرة — لازم!</span>
+p = <span class="kw">nullptr</span>;
+
+<span class="cm">// المرجع — اسم آخر لنفس المتغير</span>
+<span class="typ">int</span>&amp; ref = value;
+ref = <span class="num">200</span>;           <span class="cm">// value أصبحت 200</span></code>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الخامسة</span>
+    <span>صفحة ٦</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 5-b — المصفوفات: الغوص في العمق
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">المصفوفات: الغوص في العمق</span>
+  </div>
+
+  <div class="chapter-label" style="color:var(--acc-green)">الوحدة الخامسة — تتمة</div>
+  <div class="chapter-title">المصفوفات: كيف تفكر الذاكرة</div>
+  <div class="chapter-sub">النموذج الذهني الصحيح · الخوارزميات الأساسية · المصفوفات ثنائية الأبعاد</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-green)">
+
+  <div class="section-heading green">
+    <h2>كيف تُخزَّن المصفوفة في الذاكرة فعلاً؟</h2>
+  </div>
+
+  <p class="body-text">المصفوفة ليست مجرد "قائمة أرقام" — هي <strong>كتلة متصلة من الذاكرة</strong>. كل عنصر يحتل مكاناً مجاوراً تماماً للذي قبله. هذا يعني أن الوصول لأي عنصر بفهرسه (<code style="font-family:monospace">arr[i]</code>) عملية <strong>سريعة جداً</strong> لأن العنوان يُحسَب رياضياً:</p>
+
+  <!-- Memory diagram -->
+  <div style="background:#1e1e2e;border-radius:6px;padding:4mm 5mm;margin:3mm 0;direction:ltr;font-family:'Fira Code',monospace;font-size:8pt;color:#f8f8f2">
+    <div style="color:#6272a4;font-style:italic;margin-bottom:2mm">// int scores[5] = {90, 85, 78, 92, 88};</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1mm;margin-bottom:1.5mm">
+      <div style="background:#44475a;border-radius:3px;padding:2mm;text-align:center">
+        <div style="color:#50fa7b;font-weight:700;font-size:9pt">90</div>
+        <div style="color:#6272a4;font-size:7pt">scores[0]</div>
+      </div>
+      <div style="background:#44475a;border-radius:3px;padding:2mm;text-align:center">
+        <div style="color:#50fa7b;font-weight:700;font-size:9pt">85</div>
+        <div style="color:#6272a4;font-size:7pt">scores[1]</div>
+      </div>
+      <div style="background:#44475a;border-radius:3px;padding:2mm;text-align:center">
+        <div style="color:#50fa7b;font-weight:700;font-size:9pt">78</div>
+        <div style="color:#6272a4;font-size:7pt">scores[2]</div>
+      </div>
+      <div style="background:#44475a;border-radius:3px;padding:2mm;text-align:center">
+        <div style="color:#50fa7b;font-weight:700;font-size:9pt">92</div>
+        <div style="color:#6272a4;font-size:7pt">scores[3]</div>
+      </div>
+      <div style="background:#44475a;border-radius:3px;padding:2mm;text-align:center">
+        <div style="color:#50fa7b;font-weight:700;font-size:9pt">88</div>
+        <div style="color:#6272a4;font-size:7pt">scores[4]</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1mm">
+      <div style="color:#bd93f9;font-size:7pt;text-align:center">0x1000</div>
+      <div style="color:#bd93f9;font-size:7pt;text-align:center">0x1004</div>
+      <div style="color:#bd93f9;font-size:7pt;text-align:center">0x1008</div>
+      <div style="color:#bd93f9;font-size:7pt;text-align:center">0x100C</div>
+      <div style="color:#bd93f9;font-size:7pt;text-align:center">0x1010</div>
+    </div>
+    <div style="color:#6272a4;font-style:italic;margin-top:2mm;font-size:7.5pt">عنوان scores[i] = عنوان scores[0] + (i × 4 بايت)</div>
+  </div>
+
+  <div class="section-heading">
+    <h2>الخوارزميات الأساسية على المصفوفات</h2>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="code-block" style="margin:0">
+        <div class="code-label">إيجاد الأكبر والأصغر</div>
+        <code><span class="typ">int</span> arr[] = {<span class="num">3</span>,<span class="num">7</span>,<span class="num">1</span>,<span class="num">9</span>,<span class="num">4</span>};
+<span class="typ">int</span> n = <span class="num">5</span>;
+
+<span class="typ">int</span> maxVal = arr[<span class="num">0</span>];
+<span class="typ">int</span> minVal = arr[<span class="num">0</span>];
+
+<span class="kw">for</span> (<span class="typ">int</span> i=<span class="num">1</span>; i&lt;n; i++) {
+  <span class="kw">if</span> (arr[i] &gt; maxVal)
+    maxVal = arr[i]; <span class="cm">// 9</span>
+  <span class="kw">if</span> (arr[i] &lt; minVal)
+    minVal = arr[i]; <span class="cm">// 1</span>
+}</code>
+      </div>
+    </div>
+    <div>
+      <div class="code-block" style="margin:0">
+        <div class="code-label">عكس المصفوفة بدون مكتبة</div>
+        <code><span class="cm">// {1,2,3,4,5} → {5,4,3,2,1}</span>
+<span class="typ">int</span> arr[] = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>};
+<span class="typ">int</span> n = <span class="num">5</span>;
+<span class="typ">int</span> L=<span class="num">0</span>, R=n-<span class="num">1</span>;
+
+<span class="kw">while</span> (L &lt; R) {
+  <span class="typ">int</span> tmp = arr[L];
+  arr[L]  = arr[R];
+  arr[R]  = tmp;
+  L++;  R--;
+}
+<span class="cm">// تبديل من الطرفين للمنتصف</span></code>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading blue" style="margin-top:4mm">
+    <h2>Bubble Sort — فرز الفقاعة خطوة بخطوة</h2>
+  </div>
+
+  <p class="body-text">فكرة الفرز بالفقاعة: نمشي على المصفوفة مراراً، وفي كل مرور نقارن كل عنصرين متجاورين ونبدّلهما إذا كانا في الترتيب الخاطئ. الأرقام الكبيرة "تطفو" للأعلى مثل الفقاعة.</p>
+
+  <div class="code-block">
+    <div class="code-label">Bubble Sort — فرز تصاعدي</div>
+    <code><span class="typ">int</span> arr[] = {<span class="num">64</span>, <span class="num">34</span>, <span class="num">25</span>, <span class="num">12</span>, <span class="num">22</span>};
+<span class="typ">int</span> n = <span class="num">5</span>;
+
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i &lt; n-<span class="num">1</span>; i++) {
+    <span class="kw">for</span> (<span class="typ">int</span> j = <span class="num">0</span>; j &lt; n-i-<span class="num">1</span>; j++) {
+        <span class="kw">if</span> (arr[j] &gt; arr[j+<span class="num">1</span>]) {
+            <span class="cm">// تبادل المكانين</span>
+            <span class="typ">int</span> temp = arr[j];
+            arr[j]   = arr[j+<span class="num">1</span>];
+            arr[j+<span class="num">1</span>] = temp;
+        }
+    }
+}
+<span class="cm">// النتيجة: {12, 22, 25, 34, 64}</span></code>
+  </div>
+
+  <div class="section-heading green" style="margin-top:3mm">
+    <h2>المصفوفات ثنائية الأبعاد — الجدول الحي</h2>
+  </div>
+
+  <p class="body-text">المصفوفة ثنائية الأبعاد هي في الحقيقة "مصفوفة من المصفوفات" — فكّر فيها كجدول بصفوف وأعمدة. مثالها الكلاسيكي: جدول الدرجات حيث كل صف طالب وكل عمود مادة.</p>
+
+  <div class="code-block">
+    <div class="code-label">جدول درجات 3 طلاب × 3 مواد</div>
+    <code><span class="cm">// grades[طالب][مادة]</span>
+<span class="typ">int</span> grades[<span class="num">3</span>][<span class="num">3</span>] = {
+    {<span class="num">90</span>, <span class="num">85</span>, <span class="num">78</span>},  <span class="cm">// أحمد: رياضيات، علوم، لغة</span>
+    {<span class="num">70</span>, <span class="num">92</span>, <span class="num">88</span>},  <span class="cm">// سارة</span>
+    {<span class="num">95</span>, <span class="num">60</span>, <span class="num">74</span>}   <span class="cm">// خالد</span>
+};
+
+<span class="cm">// طباعة معدل كل طالب</span>
+<span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">0</span>; i &lt; <span class="num">3</span>; i++) {
+    <span class="typ">int</span> sum = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="typ">int</span> j = <span class="num">0</span>; j &lt; <span class="num">3</span>; j++)
+        sum += grades[i][j];
+    cout &lt;&lt; <span class="str">"معدل الطالب "</span> &lt;&lt; i &lt;&lt; <span class="str">": "</span> &lt;&lt; sum/<span class="num">3</span> &lt;&lt; endl;
+}</code>
+  </div>
+
+  <div class="info-box tip">
+    <div class="info-box-accent"><span>TIP</span></div>
+    <div class="info-box-body">
+      <strong>القاعدة الذهبية للمصفوفات:</strong> الفهرس يبدأ دائماً من <strong>صفر</strong>. مصفوفة حجمها n آخر فهرس صحيح فيها هو n-1. كتابة <code style="font-family:monospace">arr[n]</code> تقرأ ذاكرة خارج المصفوفة — خطر حقيقي في C++.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الخامسة (تتمة)</span>
+    <span>صفحة ٧</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 6 — OOP
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">البرمجة كائنية التوجه</span>
+  </div>
+
+  <div class="chapter-label">الوحدة السادسة</div>
+  <div class="chapter-title">البرمجة كائنية التوجه</div>
+  <div class="chapter-sub">الفئات · التغليف · الوراثة · تعددية الأشكال</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-coral)">
+
+  <div class="section-heading coral">
+    <h2>الفئة (Class) والكائن (Object)</h2>
+  </div>
+
+  <p class="body-text">الفئة هي القالب أو المخطط. الكائن هو النسخة الفعلية منه. مثال: السيارة فئة، وسيارتك الحمراء كائن من تلك الفئة.</p>
+
+  <div class="code-block">
+    <div class="code-label">تعريف فئة وإنشاء كائن</div>
+    <code><span class="kw">class</span> <span class="typ">Player</span> {
+<span class="kw">public</span>:
+    string name;
+    <span class="typ">int</span>    health;
+    <span class="typ">float</span>  speed;
+
+    <span class="cm">// دالة بانية (Constructor)</span>
+    <span class="fn">Player</span>(string n, <span class="typ">int</span> h) {
+        name   = n;
+        health = h;
+        speed  = <span class="num">5.0f</span>;
+    }
+
+    <span class="kw">void</span> <span class="fn">takeDamage</span>(<span class="typ">int</span> dmg) {
+        health -= dmg;
+    }
+};
+
+<span class="cm">// إنشاء كائن</span>
+<span class="typ">Player</span> p1(<span class="str">"أحمد"</span>, <span class="num">100</span>);
+p1.<span class="fn">takeDamage</span>(<span class="num">20</span>);  <span class="cm">// health = 80</span></code>
+  </div>
+
+  <div class="section-heading">
+    <h2>الوراثة وتعددية الأشكال</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">الوراثة وتعددية الأشكال</div>
+    <code><span class="kw">class</span> <span class="typ">Entity</span> {           <span class="cm">// الفئة الأم</span>
+<span class="kw">public</span>:
+    <span class="typ">float</span> x, y;
+    <span class="typ">int</span>   health;
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">update</span>() {}
+};
+
+<span class="kw">class</span> <span class="typ">Player</span> : <span class="kw">public</span> <span class="typ">Entity</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">update</span>() <span class="kw">override</span> {
+        <span class="cm">// تحرك بالكيبورد</span>
+    }
+};
+
+<span class="kw">class</span> <span class="typ">Enemy</span> : <span class="kw">public</span> <span class="typ">Entity</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">update</span>() <span class="kw">override</span> {
+        <span class="cm">// تحرك نحو اللاعب</span>
+    }
+};
+
+<span class="cm">// تعددية الأشكال في العمل</span>
+vector&lt;<span class="typ">Entity</span>*&gt; entities;
+entities.push_back(<span class="kw">new</span> <span class="typ">Player</span>());
+entities.push_back(<span class="kw">new</span> <span class="typ">Enemy</span>());
+<span class="kw">for</span> (<span class="typ">Entity</span>* e : entities) {
+    e-&gt;<span class="fn">update</span>();  <span class="cm">// كل كائن ينفّذ update() الخاصة به</span>
+}</code>
+  </div>
+
+  <div class="info-box note">
+    <div class="info-box-accent"><span>INFO</span></div>
+    <div class="info-box-body">
+      <strong>virtual</strong> ضرورية لتعددية الأشكال. بدونها يستدعي المُجمِّع دالة الفئة الأم دائماً. <strong>override</strong> في C++11 يُنبِّهك إن كتبت اسم الدالة خطأً.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة السادسة</span>
+    <span>صفحة ٨</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 6-b — OOP: الغوص في العمق
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">البرمجة كائنية التوجه: الغوص في العمق</span>
+  </div>
+
+  <div class="chapter-label" style="color:var(--acc-coral)">الوحدة السادسة — تتمة</div>
+  <div class="chapter-title">OOP: ماذا يعني أن "تُغلّف" و"تَرث"؟</div>
+  <div class="chapter-sub">التغليف الحقيقي · الـ Constructor والـ Destructor · this · مثال متكامل</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-coral)">
+
+  <div class="section-heading coral">
+    <h2>public و private — ليستا مجرد كلمات</h2>
+  </div>
+
+  <p class="body-text"><strong>التغليف (Encapsulation)</strong> يعني إخفاء التفاصيل الداخلية وتقديم واجهة نظيفة للعالم الخارجي. تخيّل حسابك البنكي: يمكنك الإيداع والسحب، لكنك لا تستطيع تعديل الرصيد مباشرة — الفئة هي المسؤولة عن حمايته.</p>
+
+  <div class="code-block">
+    <div class="code-label">BankAccount — التغليف الحقيقي</div>
+    <code><span class="kw">class</span> <span class="typ">BankAccount</span> {
+<span class="kw">private</span>:
+    <span class="cm">// لا أحد يلمسها مباشرة — حمايتها واجب</span>
+    <span class="typ">double</span> balance;
+    string ownerName;
+
+<span class="kw">public</span>:
+    <span class="cm">// Constructor — يُنفَّذ عند إنشاء الكائن</span>
+    <span class="fn">BankAccount</span>(string name, <span class="typ">double</span> initial) {
+        ownerName = name;
+        balance   = initial;
+    }
+
+    <span class="cm">// Destructor — يُنفَّذ تلقائياً عند تدمير الكائن</span>
+    ~<span class="fn">BankAccount</span>() {
+        cout &lt;&lt; ownerName &lt;&lt; <span class="str">": الحساب مُغلَق"</span> &lt;&lt; endl;
+    }
+
+    <span class="kw">void</span> <span class="fn">deposit</span>(<span class="typ">double</span> amount) {
+        <span class="kw">if</span> (amount &gt; <span class="num">0</span>) balance += amount;
+    }
+
+    <span class="kw">bool</span> <span class="fn">withdraw</span>(<span class="typ">double</span> amount) {
+        <span class="kw">if</span> (amount &gt; balance) <span class="kw">return false</span>; <span class="cm">// رفض</span>
+        balance -= amount;
+        <span class="kw">return true</span>;
+    }
+
+    <span class="typ">double</span> <span class="fn">getBalance</span>() <span class="kw">const</span> { <span class="kw">return</span> balance; }
+};
+
+<span class="cm">// الاستخدام</span>
+<span class="typ">BankAccount</span> acc(<span class="str">"أحمد"</span>, <span class="num">1000</span>);
+acc.<span class="fn">deposit</span>(<span class="num">500</span>);
+acc.<span class="fn">withdraw</span>(<span class="num">200</span>);
+<span class="cm">// acc.balance = 9999;  ← خطأ في التصريف! محمي</span></code>
+  </div>
+
+  <div class="two-col" style="margin-top:3mm">
+    <div class="def-box coral">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">Constructor دالة البناء</div>
+        <div class="def-box-desc">تُنفَّذ تلقائياً لحظة إنشاء الكائن. اسمها = اسم الفئة. لا تُرجع قيمة. تُهيّئ البيانات في حالة آمنة.</div>
+      </div>
+    </div>
+    <div class="def-box blue">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">Destructor دالة الهدم</div>
+        <div class="def-box-desc">تُنفَّذ تلقائياً لحظة تدمير الكائن (انتهاء النطاق أو delete). مسبوقة بـ <code style="font-family:monospace">~</code>. مكانها المثالي لتحرير الذاكرة.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" style="margin-top:4mm">
+    <h2>مؤشر this — "أنا نفسي"</h2>
+  </div>
+
+  <p class="body-text">داخل كل دالة عضو في الفئة يتوفر مؤشر سري اسمه <code style="font-family:monospace">this</code> يشير إلى الكائن الحالي نفسه. نستخدمه حين يتشابه اسم المعامل مع اسم العضو، أو حين نريد إرجاع الكائن نفسه (نمط method chaining).</p>
+
+  <div class="code-block">
+    <div class="code-label">استخدام this لتجنب التشابه + method chaining</div>
+    <code><span class="kw">class</span> <span class="typ">Counter</span> {
+<span class="kw">private</span>:
+    <span class="typ">int</span> count;
+<span class="kw">public</span>:
+    <span class="fn">Counter</span>(<span class="typ">int</span> count) {
+        <span class="kw">this</span>-&gt;count = count; <span class="cm">// this يفرّق بين العضو والمعامل</span>
+    }
+
+    <span class="cm">// يُرجع الكائن نفسه → نستطيع التسلسل</span>
+    <span class="typ">Counter</span>&amp; <span class="fn">increment</span>() { count++; <span class="kw">return</span> *<span class="kw">this</span>; }
+    <span class="typ">Counter</span>&amp; <span class="fn">add</span>(<span class="typ">int</span> n)    { count+=n; <span class="kw">return</span> *<span class="kw">this</span>; }
+    <span class="kw">void</span> <span class="fn">print</span>() { cout &lt;&lt; count &lt;&lt; endl; }
+};
+
+<span class="typ">Counter</span> c(<span class="num">0</span>);
+c.<span class="fn">increment</span>().<span class="fn">increment</span>().<span class="fn">add</span>(<span class="num">5</span>).<span class="fn">print</span>(); <span class="cm">// 7</span></code>
+  </div>
+
+  <div class="info-box note" style="margin-top:3mm">
+    <div class="info-box-accent"><span>INFO</span></div>
+    <div class="info-box-body">
+      <strong>متى تستخدم OOP؟</strong> حين يكون لديك شيء له <strong>حالة (state)</strong> وسلوك <strong>(behaviour)</strong> معاً — لاعب في لعبة، حساب بنكي، ملف على القرص. البيانات المجردة التي لا تملك سلوكاً قد تكون struct أبسط وأوضح.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة السادسة (تتمة)</span>
+    <span>صفحة ٩</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 7 — Raylib
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">مشروع Raylib</span>
+  </div>
+
+  <div class="chapter-label">الوحدة السابعة</div>
+  <div class="chapter-title">مشروع اللعبة بـ Raylib</div>
+  <div class="chapter-sub">حلقة اللعبة · الرسم · الإدخال · الكشف عن التصادم</div>
+  <hr class="chapter-rule" style="border-color: var(--acc-amber)">
+
+  <div class="section-heading amber">
+    <h2>هيكل برنامج Raylib</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">البنية الأساسية لكل لعبة Raylib</div>
+    <code><span class="num">#include</span> <span class="str">"raylib.h"</span>
+
+<span class="typ">int</span> <span class="fn">main</span>() {
+    <span class="fn">InitWindow</span>(<span class="num">800</span>, <span class="num">600</span>, <span class="str">"لعبتي"</span>);
+    <span class="fn">SetTargetFPS</span>(<span class="num">60</span>);
+
+    <span class="kw">while</span> (!<span class="fn">WindowShouldClose</span>()) {
+        <span class="cm">// 1. تحديث الحالة</span>
+        <span class="typ">float</span> dt = <span class="fn">GetFrameTime</span>();
+
+        <span class="cm">// 2. الرسم</span>
+        <span class="fn">BeginDrawing</span>();
+            <span class="fn">ClearBackground</span>(RAYWHITE);
+            <span class="fn">DrawText</span>(<span class="str">"Hello!"</span>, <span class="num">10</span>, <span class="num">10</span>, <span class="num">20</span>, BLACK);
+        <span class="fn">EndDrawing</span>();
+    }
+
+    <span class="fn">CloseWindow</span>();
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code>
+  </div>
+
+  <div class="section-heading">
+    <h2>الإدخال والحركة والتصادم</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">حركة اللاعب والتصادم</div>
+    <code><span class="cm">// حركة بـ WASD مع delta time</span>
+<span class="kw">if</span> (<span class="fn">IsKeyDown</span>(KEY_W)) playerPos.y -= speed * dt;
+<span class="kw">if</span> (<span class="fn">IsKeyDown</span>(KEY_S)) playerPos.y += speed * dt;
+<span class="kw">if</span> (<span class="fn">IsKeyDown</span>(KEY_A)) playerPos.x -= speed * dt;
+<span class="kw">if</span> (<span class="fn">IsKeyDown</span>(KEY_D)) playerPos.x += speed * dt;
+
+<span class="cm">// تصادم AABB</span>
+Rectangle playerRect = {playerPos.x, playerPos.y, <span class="num">40</span>, <span class="num">40</span>};
+Rectangle enemyRect  = {enemy.x, enemy.y, <span class="num">30</span>, <span class="num">30</span>};
+<span class="kw">if</span> (<span class="fn">CheckCollisionRecs</span>(playerRect, enemyRect)) {
+    playerHealth -= <span class="num">10</span>;
+}</code>
+  </div>
+
+  <div class="info-box tip">
+    <div class="info-box-accent"><span>TIP</span></div>
+    <div class="info-box-body">
+      <strong>لماذا نضرب في dt؟</strong> لو تحركنا بمقدار ثابت في كل إطار فستختلف السرعة بين الحاسوب السريع والبطيء. الضرب في <code style="font-family:monospace">GetFrameTime()</code> يجعل الحركة بالثانية وليس بالإطار.
+    </div>
+  </div>
+
+  <table class="ref-table" style="margin-top:3mm">
+    <thead>
+      <tr><th>الدالة</th><th>الاستخدام</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="code-cell">DrawCircle(x, y, r, color)</td><td>رسم دائرة — مثالية للاعب</td></tr>
+      <tr><td class="code-cell">DrawRectangle(x,y,w,h,color)</td><td>رسم مستطيل — للعدو والجدران</td></tr>
+      <tr><td class="code-cell">DrawText(text,x,y,size,color)</td><td>طباعة نص — للنقاط والـ HUD</td></tr>
+      <tr><td class="code-cell">IsKeyDown(KEY_W)</td><td>مفتاح مضغوط ومستمر</td></tr>
+      <tr><td class="code-cell">IsKeyPressed(KEY_SPACE)</td><td>مفتاح لُضغط مرة واحدة</td></tr>
+      <tr><td class="code-cell">LoadTexture("img.png")</td><td>تحميل صورة من ملف PNG</td></tr>
+      <tr><td class="code-cell">DrawTexturePro(...)</td><td>رسم صورة مع تحكم بالحجم والزاوية</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة السابعة</span>
+    <span>صفحة ١٠</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAPTER 8 — Careers
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">المسارات المهنية واللغات</span>
+  </div>
+
+  <div class="chapter-label">الوحدة الثامنة</div>
+  <div class="chapter-title">المسارات المهنية ولغات البرمجة</div>
+  <div class="chapter-sub">الحقول المهنية · أي لغة تستخدم أين · خطوتك التالية</div>
+  <hr class="chapter-rule" style="border-color: #888780">
+
+  <div class="section-heading gray">
+    <h2>أي لغة لأي مجال؟</h2>
+  </div>
+
+  <table class="ref-table">
+    <thead>
+      <tr><th>المجال</th><th>اللغات الرئيسية</th><th>السبب</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>أنظمة وبرمجة مضمّنة</td><td class="code-cell">C, C++, Rust</td><td>تحكم مباشر بالذاكرة وسرعة قصوى</td></tr>
+      <tr><td>تطوير الألعاب</td><td class="code-cell">C++, C#, Lua</td><td>Unreal=C++، Unity=C#، السكريبت=Lua</td></tr>
+      <tr><td>الويب الأمامي</td><td class="code-cell">JavaScript, TS</td><td>يعمل في المتصفح مباشرة</td></tr>
+      <tr><td>الويب الخلفي</td><td class="code-cell">Python, Go, Java</td><td>Python للسرعة، Go للتوازي، Java للمؤسسات</td></tr>
+      <tr><td>الذكاء الاصطناعي</td><td class="code-cell">Python, R</td><td>المكتبات: NumPy وPyTorch وTensorFlow</td></tr>
+      <tr><td>تطبيقات الجوال</td><td class="code-cell">Swift, Kotlin</td><td>Swift لـ iOS وKotlin لـ Android</td></tr>
+      <tr><td>DevOps والسحابة</td><td class="code-cell">Python, Go, Bash</td><td>أتمتة وأدوات البنية التحتية</td></tr>
+      <tr><td>الأمن السيبراني</td><td class="code-cell">Python, C, Rust</td><td>Python للأدوات، C لفهم الثغرات</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-heading" style="margin-top:4mm">
+    <h2>المسارات المهنية الرئيسية</h2>
+  </div>
+
+  <div class="two-col">
+    <div class="def-box green">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">مهندس برمجيات</div>
+        <div class="def-box-desc">المسار الأوسع. تبني منتجات وخدمات في كل صناعة. كل شركة تحتاج مهندسي برمجيات.</div>
+      </div>
+    </div>
+    <div class="def-box">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">مطور ألعاب</div>
+        <div class="def-box-desc">C++ مع Unreal أو C# مع Unity. يجمع المنطق والإبداع والحرفية.</div>
+      </div>
+    </div>
+    <div class="def-box blue">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">مهندس ذكاء اصطناعي</div>
+        <div class="def-box-desc">الأكثر طلباً حالياً. معظمه Python. يحتاج رياضيات قوية.</div>
+      </div>
+    </div>
+    <div class="def-box coral">
+      <div class="def-box-accent"></div>
+      <div class="def-box-body">
+        <div class="def-box-term">مهندس أمن المعلومات</div>
+        <div class="def-box-desc">هجومي أو دفاعي. C++ ميزة حقيقية هنا — معظم الثغرات على مستوى الذاكرة.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box tip" style="margin-top:4mm">
+    <div class="info-box-accent"><span>TIP</span></div>
+    <div class="info-box-body">
+      <strong>الرسالة الختامية:</strong> الآن أنت تفهم ما تفعله اللغات فعلاً. اللغة التالية التي ستتعلمها هي التي تحل مشكلتك التالية. اختر مجالاً يحمسك — وتعمَّق فيه. الكود مجرد أداة، الفكرة هي القيمة الحقيقية.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الوحدة الثامنة</span>
+    <span>صفحة ١١</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PRACTICE PROBLEMS — تحديات برمجية
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">تحديات برمجية إبداعية</span>
+  </div>
+
+  <div class="chapter-label" style="color:var(--acc-purple)">الملحق ب</div>
+  <div class="chapter-title">تحديات برمجية إبداعية</div>
+  <div class="chapter-sub">٤ مسائل متدرجة — من المصفوفات إلى OOP — فكّر قبل أن تكتب</div>
+  <hr class="chapter-rule">
+
+  <!-- Problem 1 -->
+  <div style="background:var(--acc-green-bg);border-radius:7px;overflow:hidden;margin:3mm 0;border:1px solid var(--acc-green)">
+    <div style="background:var(--acc-green);padding:2.5mm 4mm;display:flex;align-items:center;gap:3mm">
+      <span style="background:#fff;color:var(--acc-green-dk);font-family:'Cairo',sans-serif;font-weight:700;font-size:9pt;width:6mm;height:6mm;border-radius:50%;display:inline-flex;align-items:center;justify-content:center">١</span>
+      <span style="color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:10.5pt">محلل الأرقام السرية 🔍</span>
+      <span style="margin-right:auto;background:rgba(255,255,255,0.2);color:#fff;padding:0.5mm 2.5mm;border-radius:8px;font-size:8pt">مصفوفات · حلقات</span>
+    </div>
+    <div style="padding:3mm 4mm">
+      <p class="body-text" style="margin-bottom:2mm"><strong>التحدي:</strong> لديك مصفوفة من الأعداد الصحيحة. اكتب برنامجاً يطبع فقط <strong>الأعداد الأولية (Prime)</strong> منها، ثم يطبع مجموعها. العدد الأولي لا يقبل القسمة إلا على ١ وعلى نفسه.</p>
+      <div class="code-block" style="margin:0;font-size:8pt">
+        <div class="code-label">الحل النموذجي</div>
+        <code><span class="kw">bool</span> <span class="fn">isPrime</span>(<span class="typ">int</span> n) {
+    <span class="kw">if</span> (n &lt; <span class="num">2</span>) <span class="kw">return false</span>;
+    <span class="kw">for</span> (<span class="typ">int</span> i = <span class="num">2</span>; i * i &lt;= n; i++) <span class="cm">// نفحص حتى جذر n فقط</span>
+        <span class="kw">if</span> (n % i == <span class="num">0</span>) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}
+
+<span class="typ">int</span> nums[] = {<span class="num">2</span>,<span class="num">9</span>,<span class="num">17</span>,<span class="num">4</span>,<span class="num">23</span>,<span class="num">15</span>,<span class="num">11</span>,<span class="num">6</span>};
+<span class="typ">int</span> n=<span class="num">8</span>, sumPrimes=<span class="num">0</span>;
+cout &lt;&lt; <span class="str">"الأعداد الأولية: "</span>;
+<span class="kw">for</span>(<span class="typ">int</span> i=<span class="num">0</span>;i&lt;n;i++)
+    <span class="kw">if</span>(<span class="fn">isPrime</span>(nums[i])) { cout&lt;&lt;nums[i]&lt;&lt;<span class="str">" "</span>; sumPrimes+=nums[i]; }
+cout &lt;&lt; endl &lt;&lt; <span class="str">"مجموعها: "</span> &lt;&lt; sumPrimes;
+<span class="cm">// الأعداد الأولية: 2 17 23 11   مجموعها: 53</span></code>
+      </div>
+      <div style="font-size:8.5pt;color:var(--acc-green-dk);margin-top:2mm"><strong>💡 لماذا i*i ≤ n؟</strong> لأن كل عامل أكبر من √n يقابله عامل أصغر منه — فحص√n يكفي لاكتشاف جميع العوامل.</div>
+    </div>
+  </div>
+
+  <!-- Problem 2 -->
+  <div style="background:var(--acc-blue-bg);border-radius:7px;overflow:hidden;margin:3mm 0;border:1px solid var(--acc-blue)">
+    <div style="background:var(--acc-blue);padding:2.5mm 4mm;display:flex;align-items:center;gap:3mm">
+      <span style="background:#fff;color:var(--acc-blue-dk);font-family:'Cairo',sans-serif;font-weight:700;font-size:9pt;width:6mm;height:6mm;border-radius:50%;display:inline-flex;align-items:center;justify-content:center">٢</span>
+      <span style="color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:10.5pt">غربال الحروف المتحركة 🔤</span>
+      <span style="margin-right:auto;background:rgba(255,255,255,0.2);color:#fff;padding:0.5mm 2.5mm;border-radius:8px;font-size:8pt">string · char · حلقات</span>
+    </div>
+    <div style="padding:3mm 4mm">
+      <p class="body-text" style="margin-bottom:2mm"><strong>التحدي:</strong> أعطِ المستخدم كلمة إنجليزية، واطبع الحروف المتحركة (vowels) فيها بالترتيب، وعدّها. الحروف المتحركة هي: a e i o u (كبيرة وصغيرة).</p>
+      <div class="code-block" style="margin:0;font-size:8pt">
+        <div class="code-label">الحل النموذجي</div>
+        <code>string word = <span class="str">"Programming"</span>;
+string vowels = <span class="str">"aeiouAEIOU"</span>;
+<span class="typ">int</span> count = <span class="num">0</span>;
+cout &lt;&lt; <span class="str">"الحروف المتحركة في ""</span> &lt;&lt; word &lt;&lt; <span class="str">"": "</span>;
+
+<span class="kw">for</span> (<span class="typ">char</span> ch : word) {              <span class="cm">// range-based for</span>
+    <span class="kw">if</span> (vowels.find(ch) != string::npos) {
+        cout &lt;&lt; ch &lt;&lt; <span class="str">" "</span>;
+        count++;
+    }
+}
+cout &lt;&lt; <span class="str">"("</span> &lt;&lt; count &lt;&lt; <span class="str">" حروف)"</span> &lt;&lt; endl;
+<span class="cm">// o a i    (3 حروف)</span></code>
+      </div>
+      <div style="font-size:8.5pt;color:var(--acc-blue-dk);margin-top:2mm"><strong>💡 تحدٍّ إضافي:</strong> عدّل الكود ليعدّ الحروف الساكنة أيضاً، ثم اطبع النسبة المئوية لكل منهما.</div>
+    </div>
+  </div>
+
+  <!-- Problem 3 -->
+  <div style="background:var(--acc-coral-bg);border-radius:7px;overflow:hidden;margin:3mm 0;border:1px solid var(--acc-coral)">
+    <div style="background:var(--acc-coral);padding:2.5mm 4mm;display:flex;align-items:center;gap:3mm">
+      <span style="background:#fff;color:var(--acc-coral-dk);font-family:'Cairo',sans-serif;font-weight:700;font-size:9pt;width:6mm;height:6mm;border-radius:50%;display:inline-flex;align-items:center;justify-content:center">٣</span>
+      <span style="color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:10.5pt">سجل الطلاب الذكي 🎓</span>
+      <span style="margin-right:auto;background:rgba(255,255,255,0.2);color:#fff;padding:0.5mm 2.5mm;border-radius:8px;font-size:8pt">OOP · vector · class</span>
+    </div>
+    <div style="padding:3mm 4mm">
+      <p class="body-text" style="margin-bottom:2mm"><strong>التحدي:</strong> صمّم فئة <code style="font-family:monospace">Student</code> تحمل اسم الطالب وقائمة درجاته. أضف دوال: <code style="font-family:monospace">addGrade()</code> ،<code style="font-family:monospace">getAverage()</code> ،<code style="font-family:monospace">getLetterGrade()</code> (A/B/C/D/F).</p>
+      <div class="code-block" style="margin:0;font-size:8pt">
+        <div class="code-label">الحل النموذجي</div>
+        <code><span class="kw">class</span> <span class="typ">Student</span> {
+<span class="kw">private</span>:
+    string name;
+    vector&lt;<span class="typ">int</span>&gt; grades;
+<span class="kw">public</span>:
+    <span class="fn">Student</span>(string n) : name(n) {}
+    <span class="kw">void</span> <span class="fn">addGrade</span>(<span class="typ">int</span> g) { grades.<span class="fn">push_back</span>(g); }
+
+    <span class="typ">double</span> <span class="fn">getAverage</span>() {
+        <span class="kw">if</span>(grades.empty()) <span class="kw">return</span> <span class="num">0</span>;
+        <span class="typ">int</span> sum=<span class="num">0</span>;
+        <span class="kw">for</span>(<span class="typ">int</span> g : grades) sum+=g;
+        <span class="kw">return</span> (<span class="typ">double</span>)sum / grades.size();
+    }
+
+    string <span class="fn">getLetterGrade</span>() {
+        <span class="typ">double</span> avg = <span class="fn">getAverage</span>();
+        <span class="kw">if</span>(avg&gt;=<span class="num">90</span>) <span class="kw">return</span> <span class="str">"A"</span>;
+        <span class="kw">if</span>(avg&gt;=<span class="num">80</span>) <span class="kw">return</span> <span class="str">"B"</span>;
+        <span class="kw">if</span>(avg&gt;=<span class="num">70</span>) <span class="kw">return</span> <span class="str">"C"</span>;
+        <span class="kw">if</span>(avg&gt;=<span class="num">60</span>) <span class="kw">return</span> <span class="str">"D"</span>;
+        <span class="kw">return</span> <span class="str">"F"</span>;
+    }
+
+    <span class="kw">void</span> <span class="fn">print</span>() {
+        cout&lt;&lt;name&lt;&lt;<span class="str">" | معدل: "</span>&lt;&lt;<span class="fn">getAverage</span>()
+            &lt;&lt;<span class="str">" | تقدير: "</span>&lt;&lt;<span class="fn">getLetterGrade</span>()&lt;&lt;endl;
+    }
+};</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem 4 -->
+  <div style="background:var(--acc-amber-bg);border-radius:7px;overflow:hidden;margin:3mm 0;border:1px solid var(--acc-amber)">
+    <div style="background:var(--acc-amber);padding:2.5mm 4mm;display:flex;align-items:center;gap:3mm">
+      <span style="background:#fff;color:#633806;font-family:'Cairo',sans-serif;font-weight:700;font-size:9pt;width:6mm;height:6mm;border-radius:50%;display:inline-flex;align-items:center;justify-content:center">٤</span>
+      <span style="color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:10.5pt">حارس المصفوفة — بلا تكرار! 🛡️</span>
+      <span style="margin-right:auto;background:rgba(255,255,255,0.2);color:#fff;padding:0.5mm 2.5mm;border-radius:8px;font-size:8pt">vector · خوارزميات</span>
+    </div>
+    <div style="padding:3mm 4mm">
+      <p class="body-text" style="margin-bottom:2mm"><strong>التحدي:</strong> لديك مصفوفة فيها أرقام مكررة. اكتب دالة تُرجع <code style="font-family:monospace">vector</code> جديداً يحتوي فقط على الأرقام الفريدة (بدون تكرار) محافظةً على ترتيب الظهور الأول.</p>
+      <div class="code-block" style="margin:0;font-size:8pt">
+        <div class="code-label">الحل النموذجي</div>
+        <code>vector&lt;<span class="typ">int</span>&gt; <span class="fn">removeDuplicates</span>(vector&lt;<span class="typ">int</span>&gt; arr) {
+    vector&lt;<span class="typ">int</span>&gt; result;
+    <span class="kw">for</span> (<span class="typ">int</span> x : arr) {
+        <span class="kw">bool</span> found = <span class="kw">false</span>;
+        <span class="kw">for</span> (<span class="typ">int</span> r : result)
+            <span class="kw">if</span> (r == x) { found = <span class="kw">true</span>; <span class="kw">break</span>; }
+        <span class="kw">if</span> (!found) result.<span class="fn">push_back</span>(x);
+    }
+    <span class="kw">return</span> result;
+}
+<span class="cm">// {5,3,5,1,3,9,1} → {5,3,1,9}</span></code>
+      </div>
+      <div style="font-size:8.5pt;color:#633806;margin-top:2mm"><strong>💡 تحدٍّ إضافي:</strong> عدّل الدالة لتطبع أيضاً كم مرة تكرر كل رقم.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الملحق ب</span>
+    <span>صفحة ١٢</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     APPENDIX — Quick Reference
+═══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">مرجع البرمجة بـ C++ — دليل الطالب</span>
+    <span class="header-chapter">الملحق — مرجع سريع</span>
+  </div>
+
+  <div class="chapter-label">الملحق أ</div>
+  <div class="chapter-title">C++ مرجع سريع</div>
+  <div class="chapter-sub">كل شي بتحتاجه في صفحة واحدة — وزّعها من الأسبوع الأول</div>
+  <hr class="chapter-rule">
+
+  <div class="two-col">
+    <div>
+      <div class="section-heading blue" style="margin-top:0">
+        <h2>المتغيرات والأنواع</h2>
+      </div>
+      <table class="ref-table">
+        <tbody>
+          <tr><td class="code-cell">int x = 5;</td><td>عدد صحيح</td></tr>
+          <tr><td class="code-cell">float f = 3.14f;</td><td>عشري 32 بت</td></tr>
+          <tr><td class="code-cell">double d = 3.14;</td><td>عشري 64 بت</td></tr>
+          <tr><td class="code-cell">bool b = true;</td><td>صح/خطأ</td></tr>
+          <tr><td class="code-cell">char c = 'A';</td><td>حرف واحد</td></tr>
+          <tr><td class="code-cell">string s = "hi";</td><td>نص</td></tr>
+          <tr><td class="code-cell">const int N = 10;</td><td>ثابت لا يتغير</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-heading" style="margin-top:3mm">
+        <h2>التحكم في التدفق</h2>
+      </div>
+      <table class="ref-table">
+        <tbody>
+          <tr><td class="code-cell">if (x&gt;0) {} else {}</td><td>شرط</td></tr>
+          <tr><td class="code-cell">switch(x){case 1:}</td><td>حالات متعددة</td></tr>
+          <tr><td class="code-cell">for(int i=0;i&lt;n;i++)</td><td>حلقة عدّ</td></tr>
+          <tr><td class="code-cell">while (cond) {}</td><td>حلقة شرطية</td></tr>
+          <tr><td class="code-cell">do {} while(cond);</td><td>تُنفَّذ مرة أولاً</td></tr>
+          <tr><td class="code-cell">break;</td><td>اخرج من الحلقة</td></tr>
+          <tr><td class="code-cell">continue;</td><td>تخطى هذه الدورة</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div class="section-heading green" style="margin-top:0">
+        <h2>الدوال</h2>
+      </div>
+      <table class="ref-table">
+        <tbody>
+          <tr><td class="code-cell">int add(int a, int b)</td><td>تعريف دالة</td></tr>
+          <tr><td class="code-cell">void greet(string n)</td><td>بدون إرجاع</td></tr>
+          <tr><td class="code-cell">void f(int x)</td><td>بالقيمة (نسخة)</td></tr>
+          <tr><td class="code-cell">void f(int&amp; x)</td><td>بالمرجع (أصلي)</td></tr>
+          <tr><td class="code-cell">void f(int* x)</td><td>بالمؤشر</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-heading coral" style="margin-top:3mm">
+        <h2>OOP</h2>
+      </div>
+      <table class="ref-table">
+        <tbody>
+          <tr><td class="code-cell">class Dog {};</td><td>تعريف فئة</td></tr>
+          <tr><td class="code-cell">Dog d;</td><td>إنشاء كائن</td></tr>
+          <tr><td class="code-cell">Dog(string n){}</td><td>Constructor</td></tr>
+          <tr><td class="code-cell">public / private</td><td>صلاحية الوصول</td></tr>
+          <tr><td class="code-cell">class B : public A</td><td>وراثة</td></tr>
+          <tr><td class="code-cell">virtual void f()</td><td>دالة افتراضية</td></tr>
+          <tr><td class="code-cell">override</td><td>تجاوز في الوارث</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-heading amber" style="margin-top:3mm">
+        <h2>Raylib أساسيات</h2>
+      </div>
+      <table class="ref-table">
+        <tbody>
+          <tr><td class="code-cell">InitWindow(w,h,"t")</td><td>فتح النافذة</td></tr>
+          <tr><td class="code-cell">!WindowShouldClose()</td><td>شرط حلقة اللعبة</td></tr>
+          <tr><td class="code-cell">GetFrameTime()</td><td>الوقت بين الإطارات</td></tr>
+          <tr><td class="code-cell">IsKeyDown(KEY_W)</td><td>مفتاح مضغوط</td></tr>
+          <tr><td class="code-cell">BeginDrawing()</td><td>بداية الرسم</td></tr>
+          <tr><td class="code-cell">EndDrawing()</td><td>نهاية الرسم</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NEXT Training Center — الملحق أ</span>
+    <span>صفحة ١٣</span>
+  </div>
+</div>
+
+</body>
+</html>
